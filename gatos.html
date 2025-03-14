@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paletas de colores</title>
+    <link rel="stylesheet" type="text/css" href="CSS/colores.css">
+</head>
+<body>
+    <div class="containter">
+        <h1>Datos sobre gatos</h1>
+        <form id="buscador">
+          <button id="btnBuscar" onclick="buscarColores()">Buscar</button>
+          <br>
+          <h3 id="dato"></h3>
+        </form>
+      </div>
+</body>
+<script>
+    let elementoDato = document.getElementById("dato")
+    const buscarColores = async () => {
+        event.preventDefault();
+        const response = await fetch(`https://meowfacts.herokuapp.com/`)
+
+        if(!response.ok){
+            throw new Error("No se encontro el recurso");
+        }
+        const data = await response.json();
+        console.log(data.data[0]);
+        elementoDato.textContent = data.data[0] 
+    }
+</script>
+</html>

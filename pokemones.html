@@ -1,87 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pokemones</title>
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/vector-icons-7/pokeball-xeg9gc4xzwluseur3c3mm.png/pokeball-qdt0o2i0d34nyhk4opt88.png?_a=DAJFJtWIZAAC"
-    />
-    <link rel="stylesheet" type="text/css" href="CSS/pokes.css" />
-  </head>
-  <body>
-    <div class="containter">
-      <h1>Buscador de pokemones</h1>
-      <form id="buscador">
-        <label for="nombre">Introduce el nombre de algún pokemon</label>
-        <h6>Hay un 10% de probablidad de que aparezca un shiny!</h6>
-        <input type="text" id="nombre" required />
-        <button id="btnBuscar" onclick="Fetchear()">Buscar</button>
-        <br />
-        <h2 id="nombreResultado"></h2>
-        <img
-          src=""
-          alt="Imagen del pokemon"
-          style="display: none"
-          id="spritecito"
-        />
-        <h2 id="typesLabel"></h2>
-        <h3 id="tipo1"></h3>
-        <h3 id="tipo2"></h3>
-      </form>
-    </div>
-  </body>
-  <script>
-    const Fetchear = async () => {
-      event.preventDefault();
-      try {
-        let nombrePokemon = document
-          .getElementById("nombre")
-          .value.toLowerCase();
-        const response = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${nombrePokemon}`
-        );
 
-        if (!response.ok) {
-          throw new Error("No se encontro el recurso");
-        }
-        const data = await response.json();
-        let sprite;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokemones</title>
+  <link rel="shortcut icon" type="image/x-icon"
+    href="https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/vector-icons-7/pokeball-xeg9gc4xzwluseur3c3mm.png/pokeball-qdt0o2i0d34nyhk4opt88.png?_a=DAJFJtWIZAAC" />
+  <link rel="stylesheet" type="text/css" href="CSS/pokes.css" />
+</head>
 
-        const shinyChance = probabilidadShiny(1,10);
+<body>
+  <div class="containter">
+    <h1>Buscador de pokemones</h1>
+    <form id="buscador">
+      <label for="nombre">Introduce el nombre de algún pokemon</label>
+      <h6>Hay un 10% de probablidad de que aparezca un shiny!</h6>
+      <input type="text" id="nombre" required />
+      <button id="btnBuscar" onclick="Fetchear()">Buscar</button>
+      <br />
+      <h2 id="nombreResultado"></h2>
+      <img src="" alt="Imagen del pokemon" style="display: none" id="spritecito" />
+      <h2 id="typesLabel"></h2>
+      <h3 id="tipo1"></h3>
+      <h3 id="tipo2"></h3>
+    </form>
+  </div>
+</body>
+<script>
+  const Fetchear = async () => {
+    event.preventDefault();
+    try {
+      let nombrePokemon = document
+        .getElementById("nombre")
+        .value.toLowerCase();
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${nombrePokemon}`
+      );
 
-        if(shinyChance == 10 ){
-            sprite  = data.sprites.front_shiny;
-        } else {
-            sprite  = data.sprites.front_default;
-        }
-        const elementoImagen = document.getElementById("spritecito");
-        elementoImagen.src = sprite;
-        elementoImagen.style.display = "block";
-        elementoLabel = document.getElementById("typesLabel");
-        elementoLabel.textContent = "Tipos: ";
-
-        const elementoTipo1 = document.getElementById("tipo1");
-        primerTipo = data.types[0].type.name.toUpperCase();
-        elementoTipo1.textContent = primerTipo;
-
-        const elementoTipo2 = document.getElementById("tipo2");
-        if (data.types.length > 1) {
-          const segundoTipo = data.types[1].type.name.toUpperCase();
-          elementoTipo2.textContent = segundoTipo;
-          elementoTipo2.style.display = "block";
-        } else {
-          elementoTipo2.style.display = "none";
-        }
-      } catch (error) {
-        console.error(error);
+      if (!response.ok) {
+        throw new Error("No se encontro el recurso");
       }
-    };
+      const data = await response.json();
+      let sprite;
 
-    function probabilidadShiny(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+      const shinyChance = probabilidadShiny(1, 10);
+
+      if (shinyChance == 10) {
+        sprite = data.sprites.front_shiny;
+      } else {
+        sprite = data.sprites.front_default;
+      }
+      const elementoImagen = document.getElementById("spritecito");
+      elementoImagen.src = sprite;
+      elementoImagen.style.display = "block";
+      elementoLabel = document.getElementById("typesLabel");
+      elementoLabel.textContent = "Tipos: ";
+
+      const elementoTipo1 = document.getElementById("tipo1");
+      primerTipo = data.types[0].type.name.toUpperCase();
+      elementoTipo1.textContent = primerTipo;
+
+      const elementoTipo2 = document.getElementById("tipo2");
+      if (data.types.length > 1) {
+        const segundoTipo = data.types[1].type.name.toUpperCase();
+        elementoTipo2.textContent = segundoTipo;
+        elementoTipo2.style.display = "block";
+      } else {
+        elementoTipo2.style.display = "none";
+      }
+    } catch (error) {
+      console.error(error);
     }
-  </script>
+  };
+
+  function probabilidadShiny(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+</script>
+
 </html>
